@@ -3,8 +3,14 @@ class Menu extends Phaser.Scene {
         super("menuScene")
     }
 
-    prefabs() {
+    preload() {
         // load everything :D
+        this.load.spritesheet('donkey', './assets/donkey.png', {
+            frameWidth: 200,
+            frameHeight: 200,
+            startFrame: 0,
+            endFrame: 3,
+        })
     }
 
     create() {
@@ -21,7 +27,7 @@ class Menu extends Phaser.Scene {
             // loop true
         
         // if user selects play
-            //this.scene.start('playScene')
+            this.scene.start('playScene')
 
         // if user selects credits
             //this.scene.start('creditsScene')

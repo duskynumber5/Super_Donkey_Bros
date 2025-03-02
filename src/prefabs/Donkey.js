@@ -1,4 +1,4 @@
-class Donkeys extends Phaser.GameObjects.Sprite {
+class Donkey extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame)
 
@@ -9,7 +9,7 @@ class Donkeys extends Phaser.GameObjects.Sprite {
         this.body.setCollideWorldBounds(true)
         this.velocity = 350
 
-        this.body.setSize(32, 32).setOffset(0, 0)
+        this.body.setSize(96, 96).setOffset(0, 0)
     }
 
     update() {   
@@ -24,7 +24,7 @@ class Donkeys extends Phaser.GameObjects.Sprite {
         this.setVelocity(this.velocity * playerVector.y)
 
         // animation
-        this.player.play(donkeyKick, true)
+        //this.player.play(donkeyKick, true)
 
     }
     

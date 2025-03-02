@@ -9,12 +9,32 @@ class Play extends Phaser.Scene {
         // add high score (text red (text: 0xffb59e outline: 0xa80203) -- number green (text: 0xe6ff99 outline: 0x038500))
 
         // add player score w/ chosen name (text blue (text: 0x58ffff outline: 0x049da2) -- number green (text: 0xe6ff99 outline: 0x038500))
-
+        
         // add borders (yellow (0xffffd6 outline: 0xbab601))
+        
+        // create animations
+        this.anims.create({
+            key: 'donkeyUp',
+            frames: this.anims.generateFrameNumbers('donkey', { start: 0, end: 3, first: 0}),
+            frameRate: 10,
+            repeat: -1,
+        })
+        this.anims.create({
+            key: 'donkeyDown',
+            frames: this.anims.generateFrameNumbers('donkey', { start: 0, end: 3}).reverse(),
+            frameRate: 10,
+            repeat: -1,
+        })
 
         // add donkeys
+        this.donkeyRight = new Donkey(this, game.config.width - 200, game.config.height / 1.5, 'donkey').setOrigin(0,0)
+        //this.donkeyRight.anims.play('donkeyDown')
+
+        this.donkeyLeft = new Donkey(this, 0 - game.config.width, game.config.height / 1.5, 'donkey').setFlipX(true).setOrigin(0,0)
+        //this.donkeyLeft.anims.play('donkeyUp')
 
         // add ball (0xffb59e outline: 0xa80203)
+
     }
 
     update() {
