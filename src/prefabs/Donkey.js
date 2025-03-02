@@ -7,25 +7,15 @@ class Donkey extends Phaser.GameObjects.Sprite {
         scene.physics.add.existing(this)  
     
         this.body.setCollideWorldBounds(true)
-        this.velocity = 350
-
-        this.body.setSize(96, 96).setOffset(0, 0)
+        this.velocity = 10  
     }
 
-    update() {   
-        let Vector = new Phaser.Math.Vector2(0,0)
-        
+    update() {           
         // movement
-        if (keyJUMPLEFT.isDown || keyJUMPRIGHT.isDown) {
-            playerVector.y = -1
+        if (keyD.isDown || keyK.isDown) {
+            if (!this.body.onFloor()) { return }
+            this.body.setVelocityY(-1600)
         }
-
-        // apply movement
-        this.setVelocity(this.velocity * playerVector.y)
-
-        // animation
-        //this.player.play(donkeyKick, true)
-
     }
     
     reset() {

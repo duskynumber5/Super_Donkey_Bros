@@ -4,6 +4,8 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        this.physics.world.setBounds(0, 0, 800, 700)
+
         this.add.rectangle(0, 0, game.config.width, game.config.height, 0x282d2f).setOrigin(0, 0)
 
         // add high score (text red (text: 0xffb59e outline: 0xa80203) -- number green (text: 0xe6ff99 outline: 0x038500))
@@ -27,13 +29,19 @@ class Play extends Phaser.Scene {
         })
 
         // add donkeys
-        this.donkeyRight = new Donkey(this, game.config.width - 200, game.config.height / 1.5, 'donkey').setOrigin(0,0)
+        this.donkeyRight = new Donkey(this, 580, game.config.height / 1.5, 'donkey').setOrigin(0,0)
+        this.donkeyRight.body.setSize(130, 110).setOffset(50, 40)
         //this.donkeyRight.anims.play('donkeyDown')
 
-        this.donkeyLeft = new Donkey(this, 0 - game.config.width, game.config.height / 1.5, 'donkey').setFlipX(true).setOrigin(0,0)
+        this.donkeyLeft = new Donkey(this, 20, game.config.height / 1.5, 'donkey').setFlipX(true).setOrigin(0,0)
+        this.donkeyLeft.body.setSize(130, 110).setOffset(20, 40)
         //this.donkeyLeft.anims.play('donkeyUp')
 
         // add ball (0xffb59e outline: 0xa80203)
+
+        // bind keys
+        keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
+        keyK = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K)
 
     }
 
@@ -53,6 +61,12 @@ class Play extends Phaser.Scene {
             // if yes call donkey update
             // play jump sound
             // play animation?
+        if (Phaser.Input.Keyboard.JustDown(keyD)) {
+            this.donkeyLeft.update()
+        }
+        if (Phaser.Input.Keyboard.JustDown(keyK)) {
+            this.donkeyRight.update()
+        }
         
     }
 

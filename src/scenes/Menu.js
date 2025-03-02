@@ -7,7 +7,7 @@ class Menu extends Phaser.Scene {
         // load everything :D
         this.load.spritesheet('donkey', './assets/donkey.png', {
             frameWidth: 200,
-            frameHeight: 200,
+            frameHeight: 150,
             startFrame: 0,
             endFrame: 3,
         })
@@ -19,6 +19,10 @@ class Menu extends Phaser.Scene {
         // add basic title for now
 
         // ideally add animated title!
+
+        // bind keys
+        keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
+        keyK = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K)
     }
 
     update() {
