@@ -7,6 +7,9 @@ class Play extends Phaser.Scene {
         this.physics.world.setBounds(0, 0, 800, 725)
 
         this.add.rectangle(0, 0, game.config.width, game.config.height, 0x282d2f).setOrigin(0, 0)
+
+        // game over flag
+        this.gameOver = false
         
         let highScoreConfig = {
             fontFamily: 'Courier',
@@ -46,15 +49,19 @@ class Play extends Phaser.Scene {
         this.highScore = 0
         this.scoreLeft = this.add.text(60, 50, 'HIGH SCORE', highScoreConfig)
         this.scoreLeft.setStroke('#a80203', 10)
-        this.score2Left = this.add.text(30, 100, 'number', numbersConfig)
+        this.score2Left = this.add.text(30, 100, this.highScore, numbersConfig)
         this.score2Left.setStroke('#038500', 10)
-        
+
+        if (game.scoreBank > 0) {
+            this.highScore = game.scoreBank
+        }
+
         // add player score w/ chosen name (text blue (text: 0x58ffff outline: 0x049da2) -- number green (text: 0xe6ff99 outline: 0x038500))
         this.pScore = 0
-        this.scoreLeft = this.add.text(600, 50, 'NAME', pScoreConfig)
-        this.scoreLeft.setStroke('#049da2', 10)
-        this.score2Left = this.add.text(550, 100, 'number', numbersConfig)
-        this.score2Left.setStroke('#038500', 10)
+        this.scoreRight = this.add.text(600, 50, 'NAME', pScoreConfig)
+        this.scoreRight.setStroke('#049da2', 10)
+        this.score2Right = this.add.text(550, 100, this.pScore, numbersConfig)
+        this.score2Right.setStroke('#038500', 10)
         
         // add borders (yellow (0xffffd6 outline: 0xb7b713))
         let graphics = this.add.graphics()
@@ -123,8 +130,11 @@ class Play extends Phaser.Scene {
     }
 
     update() {
-        // if player score > high score
-            // update high score to match player score
+        // update high score
+        if(this.highScore < this.pScore) {
+            this.highScore = this.pScore
+            this.score2Left.text = this.highScore
+        }
 
         // ball movement
             // if ball off screen 
@@ -140,9 +150,18 @@ class Play extends Phaser.Scene {
             // play animation?
         if (Phaser.Input.Keyboard.JustDown(keyD)) {
             this.donkeyLeft.update()
+            this.pScore += 10
+            this.score2Right.text = this.pScore
         }
         if (Phaser.Input.Keyboard.JustDown(keyK)) {
             this.donkeyRight.update()
+        }
+
+
+        // game over
+        if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyD)) {
+            game.carryover = this.highScore
+            this.scene.start("menuScene")
         }
         
     }

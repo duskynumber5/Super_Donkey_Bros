@@ -24,6 +24,9 @@ class Menu extends Phaser.Scene {
         // bind keys
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
         keyK = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K)
+
+        // high score
+        game.scoreBank = game.carryover
     }
 
     update() {
