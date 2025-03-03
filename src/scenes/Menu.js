@@ -6,11 +6,12 @@ class Menu extends Phaser.Scene {
     preload() {
         // load everything :D
         this.load.spritesheet('donkey', './assets/donkey.png', {
-            frameWidth: 200,
-            frameHeight: 200,
+            frameWidth: 150,
+            frameHeight: 150,
             startFrame: 0,
             endFrame: 3,
         })
+        this.load.image('ball', './assets/ball.png')
     }
 
     create() {

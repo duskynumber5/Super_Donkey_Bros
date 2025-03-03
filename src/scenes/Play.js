@@ -105,15 +105,16 @@ class Play extends Phaser.Scene {
         })
 
         // add donkeys
-        this.donkeyRight = new Donkey(this, 580, game.config.height / 1.5, 'donkey').setOrigin(0, 0)
-        this.donkeyRight.body.setSize(130, 115).setOffset(50, 40)
+        this.donkeyRight = new Donkey(this, 625, game.config.height / 1.5, 'donkey').setFlipX(true).setOrigin(0, 0)
+        this.donkeyRight.body.setSize(95, 85).setOffset(40, 30)
         //this.donkeyRight.anims.play('donkeyDown')
 
-        this.donkeyLeft = new Donkey(this, 20, game.config.height / 1.5, 'donkey').setFlipX(true).setOrigin(0, 0)
-        this.donkeyLeft.body.setSize(130, 115).setOffset(21, 40)
+        this.donkeyLeft = new Donkey(this, 30, game.config.height / 1.5, 'donkey').setOrigin(0, 0)
+        this.donkeyLeft.body.setSize(95, 85).setOffset(19, 30)
         //this.donkeyLeft.anims.play('donkeyUp')
 
         // add ball (0xffb59e outline: 0xa80203)
+        this.add.image(390, 359, 'ball')
 
         // bind keys
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
