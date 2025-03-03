@@ -7,14 +7,13 @@ class Donkey extends Phaser.GameObjects.Sprite {
         scene.physics.add.existing(this)  
     
         this.body.setCollideWorldBounds(true)
-        this.velocity = 10  
     }
 
     update() {           
         // movement
         if (keyD.isDown || keyK.isDown) {
             if (!this.body.onFloor()) { return }
-            this.body.setVelocityY(-1600)
+            this.body.setVelocityY(-1500)
         }
     }
     

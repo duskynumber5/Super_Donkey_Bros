@@ -7,7 +7,7 @@ class Menu extends Phaser.Scene {
         // load everything :D
         this.load.spritesheet('donkey', './assets/donkey.png', {
             frameWidth: 200,
-            frameHeight: 150,
+            frameHeight: 200,
             startFrame: 0,
             endFrame: 3,
         })
