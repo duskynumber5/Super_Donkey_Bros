@@ -6,8 +6,8 @@ class Menu extends Phaser.Scene {
     preload() {
         // load everything :D
         this.load.spritesheet('donkey', './assets/donkey.png', {
-            frameWidth: 150,
-            frameHeight: 150,
+            frameWidth: 160,
+            frameHeight: 130,
             startFrame: 0,
             endFrame: 3,
         })
@@ -15,9 +15,12 @@ class Menu extends Phaser.Scene {
     }
 
     create() {
-        this.add.rectangle(0, 0, game.config.width, game.config.height, 0x7fe3ea).setOrigin(0, 0)
+        this.add.rectangle(0, 0, game.config.width, game.config.height, 0x7bd6e3).setOrigin(0, 0)
 
         // add basic title for now
+        this.add.text(300, 400, 'Super Donkey Bros.')
+        this.add.text(300, 500, 'press K to play')
+        this.add.text(300, 600, 'press D for credits')
 
         // ideally add animated title!
 
@@ -26,7 +29,12 @@ class Menu extends Phaser.Scene {
         keyK = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K)
 
         // high score
-        game.scoreBank = game.carryover
+        if (game.carryover > 0) {
+            game.highScore = game.carryover
+        } else {
+            game.highScore = 0
+        }
+        console.log(game.highScore)
     }
 
     update() {
@@ -35,10 +43,13 @@ class Menu extends Phaser.Scene {
             // loop true
         
         // if user selects play
+        if(Phaser.Input.Keyboard.JustDown(keyK)) {
             this.scene.start('playScene')
+        }
 
-        // if user selects credits
-            //this.scene.start('creditsScene')
+        if (Phaser.Input.Keyboard.JustDown(keyD)) {
+            this.scene.start('creditsScene')
+        }
     }
 
 }

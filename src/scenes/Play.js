@@ -47,14 +47,13 @@ class Play extends Phaser.Scene {
 
         // add high score (text red (text: 0xffb59e outline: 0xa80203) -- number green (text: 0xe6ff99 outline: 0x038500))
         this.highScore = 0
+        if (game.highScore > 0) {
+            this.highScore = game.highScore
+        }
         this.scoreLeft = this.add.text(60, 50, 'HIGH SCORE', highScoreConfig)
         this.scoreLeft.setStroke('#a80203', 10)
         this.score2Left = this.add.text(30, 100, this.highScore, numbersConfig)
         this.score2Left.setStroke('#038500', 10)
-
-        if (game.scoreBank > 0) {
-            this.highScore = game.scoreBank
-        }
 
         // add player score w/ chosen name (text blue (text: 0x58ffff outline: 0x049da2) -- number green (text: 0xe6ff99 outline: 0x038500))
         this.pScore = 0
@@ -102,26 +101,23 @@ class Play extends Phaser.Scene {
             key: 'donkeyUp',
             frames: this.anims.generateFrameNumbers('donkey', { start: 0, end: 3, first: 0}),
             frameRate: 10,
-            repeat: -1,
         })
         this.anims.create({
             key: 'donkeyDown',
-            frames: this.anims.generateFrameNumbers('donkey', { start: 0, end: 3, first: 0}).reverse(),
+            frames: this.anims.generateFrameNumbers('donkey', { start: 3, end: 0, first: 0}),
             frameRate: 10,
-            repeat: -1,
         })
 
         // add donkeys
         this.donkeyRight = new Donkey(this, 625, game.config.height / 1.5, 'donkey').setFlipX(true).setOrigin(0, 0)
-        this.donkeyRight.body.setSize(95, 85).setOffset(40, 30)
-        //this.donkeyRight.anims.play('donkeyDown')
+        this.donkeyRight.body.setSize(30, 80).setOffset(35, 35)
 
         this.donkeyLeft = new Donkey(this, 30, game.config.height / 1.5, 'donkey').setOrigin(0, 0)
-        this.donkeyLeft.body.setSize(95, 85).setOffset(19, 30)
-        //this.donkeyLeft.anims.play('donkeyUp')
+        this.donkeyLeft.body.setSize(30, 80).setOffset(85, 35)
 
         // add ball (0xffb59e outline: 0xa80203)
-        this.add.image(390, 359, 'ball')
+        this.ball = new Ball(this, 390, 359, 'ball').setOrigin(0, 0)
+        this.ball.body.setSize(8, 15).setOffset(22, 17)
 
         // bind keys
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
@@ -130,40 +126,99 @@ class Play extends Phaser.Scene {
     }
 
     update() {
+        if(this.gameOver) {
+            this.add.text(400, 400, 'game over :(')
+            this.add.text(400, 500, 'press D for menu')
+            this.add.text(400, 600, 'press K to restart')
+
+            // back to menu
+            if(Phaser.Input.Keyboard.JustDown(keyD)) {
+                game.carryover = this.highScore
+                this.scene.start("menuScene")
+            }
+            if(Phaser.Input.Keyboard.JustDown(keyK)) {
+                game.highScore = this.highScore
+                this.scene.restart()
+            }
+        }
+
         // update high score
-        if(this.highScore < this.pScore) {
+        if (this.highScore < this.pScore) {
             this.highScore = this.pScore
             this.score2Left.text = this.highScore
         }
 
-        // ball movement
-            // if ball off screen 
-                // delete ball
-                // game over
-            // if donkey hit ball
-                // reverse direction w/ random velocity
-                // add 100? to score
+        // ball movement  
+
+        // if ball off screen 
+            // delete ball
+            // game over
+        if (this.ball.x > 750 || this.ball.x < 0) {
+            this.ball.destroy()
+            this.gameOver = true    
+        }  
+
+        // collision physics
+        this.physics.add.collider(this.ball, this.donkeyLeft)
+        this.physics.add.collider(this.ball, this.donkeyRight)            
+
+        // check for collisions and handle is true
+        if(this.checkCollision(this.donkeyLeft, this.ball) && this.ball.x < 160 && this.ball.x > 150) {
+            this.handleBounce(this.ball, this.donkeyLeft) 
+            console.log('hit!')
+
+        }
+        if(this.checkCollision(this.donkeyRight, this.ball) && this.ball.x < 620 && this.ball.x > 610) {
+            this.handleBounce(this.ball, this.donkeyRight)
+            console.log('hit!')
+        }
         
-        // look for user input
-            // if yes call donkey update
-            // play jump sound
-            // play animation?
-        if (Phaser.Input.Keyboard.JustDown(keyD)) {
+        // play jump sound
+        // make donkeys jump
+        if (!this.gameOver && Phaser.Input.Keyboard.JustDown(keyD)) {
             this.donkeyLeft.update()
-            this.pScore += 10
-            this.score2Right.text = this.pScore
         }
-        if (Phaser.Input.Keyboard.JustDown(keyK)) {
+        if (!this.gameOver && Phaser.Input.Keyboard.JustDown(keyK)) {
             this.donkeyRight.update()
-        }
-
-
-        // game over
-        if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyD)) {
-            game.carryover = this.highScore
-            this.scene.start("menuScene")
         }
         
     }
 
+    // check collisions
+    checkCollision(donkey, ball) {
+        // simple AABB checking
+        if (donkey.x < ball.x + ball.width &&
+        donkey.x + donkey.width > ball.x &&
+        donkey.y < ball.y + ball.height &&
+        donkey.height + donkey.y > ball.y) {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    handleBounce(ball, donkey) {
+        // check if ball can change direction
+        if (!ball.hitCooldown) { 
+            // reverse X direction & keep Y constant
+            ball.body.setVelocityX(-ball.body.velocity.x)
+            ball.body.setVelocityY(0) 
+            
+            // increase score & update score
+            this.pScore += 100
+            this.score2Right.text = this.pScore
+
+            // animation
+            donkey.anims.play('donkeyUp')
+            donkey.anims.play('donkeyDown')
+            
+            // set cooldown flag
+            ball.hitCooldown = true 
+    
+            // reset cooldown after 100ms to allow another bounce
+            this.time.delayedCall(1000, () => {
+                ball.hitCooldown = false
+            })
+        }
+    }
 }
