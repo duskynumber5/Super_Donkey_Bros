@@ -57,7 +57,7 @@ class Play extends Phaser.Scene {
 
         // add player score w/ chosen name (text blue (text: 0x58ffff outline: 0x049da2) -- number green (text: 0xe6ff99 outline: 0x038500))
         this.pScore = 0
-        this.scoreRight = this.add.text(600, 50, 'NAME', pScoreConfig)
+        this.scoreRight = this.add.text(600, 50, game.playerName.join(''), pScoreConfig)
         this.scoreRight.setStroke('#049da2', 10)
         this.score2Right = this.add.text(550, 100, this.pScore, numbersConfig)
         this.score2Right.setStroke('#038500', 10)
@@ -110,14 +110,16 @@ class Play extends Phaser.Scene {
 
         // add donkeys
         this.donkeyRight = new Donkey(this, 625, game.config.height / 1.5, 'donkey').setFlipX(true).setOrigin(0, 0)
+        this.physics.world.enable(this.donkeyRight)
         this.donkeyRight.body.setSize(30, 80).setOffset(35, 35)
 
         this.donkeyLeft = new Donkey(this, 30, game.config.height / 1.5, 'donkey').setOrigin(0, 0)
-        this.donkeyLeft.body.setSize(30, 80).setOffset(85, 35)
+        this.physics.world.enable(this.donkeyLeft)
+        this.donkeyLeft.body.setSize(30, 80).setOffset(95, 35)
 
         // add ball (0xffb59e outline: 0xa80203)
         this.ball = new Ball(this, 390, 359, 'ball').setOrigin(0, 0)
-        this.ball.body.setSize(8, 15).setOffset(22, 17)
+        this.ball.body.setSize(8, 15).setOffset(22, 17)    
 
         // bind keys
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
@@ -148,11 +150,7 @@ class Play extends Phaser.Scene {
             this.score2Left.text = this.highScore
         }
 
-        // ball movement  
-
-        // if ball off screen 
-            // delete ball
-            // game over
+        // if ball off screen delete ball && game over
         if (this.ball.x > 750 || this.ball.x < 0) {
             this.ball.destroy()
             this.gameOver = true    
@@ -163,18 +161,14 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(this.ball, this.donkeyRight)            
 
         // check for collisions and handle is true
-        if(this.checkCollision(this.donkeyLeft, this.ball) && this.ball.x < 160 && this.ball.x > 150) {
+        if(this.checkCollision(this.donkeyLeft.body, this.ball) && this.ball.x > 30) {
             this.handleBounce(this.ball, this.donkeyLeft) 
-            console.log('hit!')
-
         }
-        if(this.checkCollision(this.donkeyRight, this.ball) && this.ball.x < 620 && this.ball.x > 610) {
+        if(this.checkCollision(this.donkeyRight.body, this.ball) && this.ball.x < 625) {
             this.handleBounce(this.ball, this.donkeyRight)
-            console.log('hit!')
         }
         
-        // play jump sound
-        // make donkeys jump
+        // play jump sound && make donkeys jump
         if (!this.gameOver && Phaser.Input.Keyboard.JustDown(keyD)) {
             this.donkeyLeft.update()
         }
@@ -188,10 +182,10 @@ class Play extends Phaser.Scene {
     checkCollision(donkey, ball) {
         // simple AABB checking
         if (donkey.x < ball.x + ball.width &&
-        donkey.x + donkey.width > ball.x &&
-        donkey.y < ball.y + ball.height &&
-        donkey.height + donkey.y > ball.y) {
-            return true
+            donkey.x + donkey.width > ball.x &&
+            donkey.y < ball.y + ball.height &&
+            donkey.height + donkey.y > ball.y) {
+                return true
         } else {
             return false
         }
@@ -200,12 +194,16 @@ class Play extends Phaser.Scene {
     handleBounce(ball, donkey) {
         // check if ball can change direction
         if (!ball.hitCooldown) { 
-            // reverse X direction & keep Y constant
-            ball.body.setVelocityX(-ball.body.velocity.x)
-            ball.body.setVelocityY(0) 
+            // reverse X direction & maintain Y arc
+            if (donkey == this.donkeyLeft) {
+                this.ball.body.velocity.x = (Phaser.Math.Between(250, 600))
+            }
+            else if (donkey == this.donkeyRight) {
+                this.ball.body.velocity.x = (-Phaser.Math.Between(250, 600))
+            }
             
             // increase score & update score
-            this.pScore += 100
+            this.pScore += Phaser.Math.Between(100, 500)
             this.score2Right.text = this.pScore
 
             // animation
@@ -216,7 +214,7 @@ class Play extends Phaser.Scene {
             ball.hitCooldown = true 
     
             // reset cooldown after 100ms to allow another bounce
-            this.time.delayedCall(1000, () => {
+            this.time.delayedCall(100, () => {
                 ball.hitCooldown = false
             })
         }

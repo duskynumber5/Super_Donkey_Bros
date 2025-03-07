@@ -6,6 +6,7 @@ class Donkey extends Phaser.GameObjects.Sprite {
         scene.add.existing(this)   
         scene.physics.add.existing(this)  
     
+        this.body.gravity.y = 3500
         this.body.setCollideWorldBounds(true)
         this.body.setImmovable(true)
     }

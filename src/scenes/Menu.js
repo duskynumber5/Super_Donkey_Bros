@@ -44,7 +44,7 @@ class Menu extends Phaser.Scene {
         
         // if user selects play
         if(Phaser.Input.Keyboard.JustDown(keyK)) {
-            this.scene.start('playScene')
+            this.scene.start('nameSelectScene')
         }
 
         if (Phaser.Input.Keyboard.JustDown(keyD)) {
