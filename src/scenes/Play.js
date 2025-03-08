@@ -136,10 +136,12 @@ class Play extends Phaser.Scene {
             // back to menu
             if(Phaser.Input.Keyboard.JustDown(keyD)) {
                 game.carryover = this.highScore
+                this.sound.play('select')
                 this.scene.start("menuScene")
             }
             if(Phaser.Input.Keyboard.JustDown(keyK)) {
                 game.highScore = this.highScore
+                this.sound.play('select')
                 this.scene.restart()
             }
         }
@@ -170,9 +172,11 @@ class Play extends Phaser.Scene {
         
         // play jump sound && make donkeys jump
         if (!this.gameOver && Phaser.Input.Keyboard.JustDown(keyD)) {
+            this.sound.play('jump')
             this.donkeyLeft.update()
         }
         if (!this.gameOver && Phaser.Input.Keyboard.JustDown(keyK)) {
+            this.sound.play('jump')
             this.donkeyRight.update()
         }
         

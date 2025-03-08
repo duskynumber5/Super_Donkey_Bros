@@ -1,8 +1,6 @@
 // Maddison Lobo
 // Super Donkey Bros
-// _ hours
-
-// 
+// 15 hours
 
 // screen size and add scenes
 let config = {
@@ -18,7 +16,7 @@ let config = {
             debug: false
         }
     },
-    scene: [ Menu, Credits, NameSelect, Play ],
+    scene: [ Menu, Credits, NameSelect, Controls, Play ],
 }
 
 // make game!
