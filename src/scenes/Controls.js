@@ -5,9 +5,11 @@ class Controls extends Phaser.Scene {
 
     create() {
         this.add.rectangle(0, 0, game.config.width, game.config.height, 0x282d2f).setOrigin(0, 0)
-        this.hello = this.add.text(175, 300, 'hi ' + game.playerName.join('') + '!', game.blueConfig)
+        this.hello = this.add.text(175, 200, 'hi ' + game.playerName.join('') + '!', game.blueConfig)
         this.hello.setStroke('#049da2', 10)
-        this.controls = this.add.text(50, 500, 'press D and K to make each donkey jump', game.redConfig)
+        this.controls = this.add.text(175, 400, 'rapidly press D and K to', game.redConfig)
+        this.controls.setStroke('#a80203', 10)
+        this.controls = this.add.text(200, 450, 'make each donkey jump', game.redConfig)
         this.controls.setStroke('#a80203', 10)
         this.play = this.add.text(250, 600, 'press K to play!', game.redConfig)
         this.play.setStroke('#a80203', 10)

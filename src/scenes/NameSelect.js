@@ -93,7 +93,12 @@ class NameSelect extends Phaser.Scene {
             }
         }
 
-        this.slots = [this.slot1, this.slot2, this.slot3, this.slot4]       // array of slots
+        this.slots = [this.slot1, this.slot2, this.slot3, this.slot4]       // array of slots    
+
+        if (this.currentSlot < 4) {
+            this.slots[this.currentSlot].setStroke('#FFFFFF', 10)
+        }
+
         // detect input for change letter
         if(Phaser.Input.Keyboard.JustDown(keyD)) {
             this.sound.play('select')
@@ -115,6 +120,9 @@ class NameSelect extends Phaser.Scene {
                 game.playerName.push(' ')       // if its '_' then add a space
             }
             //console.log(game.playerName)
+
+            // update highlight
+            this.slots[this.currentSlot].setStroke('#049da2', 10)
             this.currentSlot += 1           // next slot  
             this.currentLetter = 0          // start at first letter
         }

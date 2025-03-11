@@ -4,7 +4,7 @@ class Play extends Phaser.Scene {
     }
 
     create() {
-        this.physics.world.setBounds(0, 0, 800, 725)
+        this.physics.world.setBounds(0, 200, 800, 520)
 
         this.add.rectangle(0, 0, game.config.width, game.config.height, 0x282d2f).setOrigin(0, 0)
 
@@ -63,13 +63,13 @@ class Play extends Phaser.Scene {
         this.score2Right.setStroke('#038500', 10) // darker stroke
         
         // add borders (yellow (0xffffd6 outline: 0xb7b713))
-        let graphics = this.add.graphics()
+        let bounds = this.add.graphics()
 
         // set fill color
-        graphics.fillStyle(0xb7b713, 1) // light yellow fill
+        bounds.fillStyle(0xb7b713, 1) // light yellow fill
         
         // det stroke color 
-        graphics.lineStyle(3, 0xffffd6, 1) // dark yellow outline
+        bounds.lineStyle(3, 0xffffd6, 1) // dark yellow outline
         
         // dash settings
         let dash_length = 20
@@ -80,23 +80,23 @@ class Play extends Phaser.Scene {
         let y2 = 740
         
         while (x1 < 750 && x2 < 750) {
-            graphics.fillStyle(0xffffd6, 1)  // light yellow fill
-            graphics.lineStyle(3, 0xb7b713, 1) // darker stroke
+            bounds.fillStyle(0xffffd6, 1)  // light yellow fill
+            bounds.lineStyle(3, 0xb7b713, 1) // darker stroke
 
-            graphics.fillRect(x1, y1, dash_length, 6) // fill each dash
-            graphics.strokeRect(x1, y1, dash_length, 6) // apply stroke to each dash
+            bounds.fillRect(x1, y1, dash_length, 6) // fill each dash
+            bounds.strokeRect(x1, y1, dash_length, 6) // apply stroke to each dash
 
             x1 += dash_length + gap_length; // move to next dash position
 
-            graphics.fillRect(x2, y2, dash_length, 6) // fill each dash
-            graphics.strokeRect(x2, y2, dash_length, 6) // apply stroke to each dash
+            bounds.fillRect(x2, y2, dash_length, 6) // fill each dash
+            bounds.strokeRect(x2, y2, dash_length, 6) // apply stroke to each dash
 
             x2 += dash_length + gap_length // move to next dash position
         }
 
         // center dividers
-        this.add.rectangle(387, 220, 10, 505, 0xb7b713).setOrigin(0, 0) // dark outline
-        this.add.rectangle(390, 225, 4, 495, 0xffffd6).setOrigin(0, 0) // light fill
+        this.add.rectangle(399, 220, 10, 505, 0xb7b713).setOrigin(0, 0) // dark outline
+        this.add.rectangle(402, 225, 4, 495, 0xffffd6).setOrigin(0, 0) // light fill
         
         // create animations
         this.anims.create({
@@ -127,85 +127,91 @@ class Play extends Phaser.Scene {
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
         keyK = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K)
 
+        // collision physics
+        this.physics.add.collider(this.ball, this.donkeyLeft, this.handleBounce, null, this)
+        this.physics.add.collider(this.ball, this.donkeyRight, this.handleBounce, null, this) 
+
     }
 
     update() {
-        if(this.gameOver) {
-            this.add.text(400, 400, 'game over :(')
-            this.add.text(400, 500, 'press D for menu')
-            this.add.text(400, 600, 'press K to restart')
+        // if ball off screen delete ball && game over
+        if (this.ball.x >= 750 || this.ball.x <= 0) { 
+            this.ball.destroy()
+            this.gameOver = true    
+        }  
 
-            // back to menu
-            if(Phaser.Input.Keyboard.JustDown(keyD)) {
-                game.carryover = this.highScore     // save high score
-                this.sound.play('select')
-                this.scene.start("menuScene")
-            }
-            if(Phaser.Input.Keyboard.JustDown(keyK)) {
-                game.highScore = this.highScore     // save high score
-                this.sound.play('select')
-                this.scene.restart()
-            }
+        if(this.gameOver) {
+            this.add.text(255, 300, 'G A M E  O V E R', game.redConfig).setStroke('#a80203', 10)
+            this.add.text(255, 450, 'press D for menu', game.redConfig).setStroke('#a80203', 10)
+            this.add.text(240, 550, 'press K to restart', game.redConfig).setStroke('#a80203', 10)
+
+            this.time.delayedCall(1000, () => {
+                // back to menu
+                if(Phaser.Input.Keyboard.JustDown(keyD)) {
+                    game.carryover = this.highScore     // save high score
+                    this.sound.play('select')
+                    this.scene.start("menuScene")
+                }
+                if(Phaser.Input.Keyboard.JustDown(keyK)) {
+                    game.highScore = this.highScore     // save high score
+                    this.sound.play('select')
+                    this.scene.restart()
+                }
+            })
         }
 
         // update high score
         if (this.highScore < this.pScore) {     // if player beats high score
             this.highScore = this.pScore        
             this.score2Left.text = this.highScore   // update text
-        }
-
-        // if ball off screen delete ball && game over
-        if (this.ball.x > 750 || this.ball.x < 0) { 
-            this.ball.destroy()
-            this.gameOver = true    
         }  
 
-        // collision physics
-        this.physics.add.collider(this.ball, this.donkeyLeft)
-        this.physics.add.collider(this.ball, this.donkeyRight)            
+        // vertical bounds for ball
+        if (!this.gameOver) {
+            if (this.ball.y < 200 && !this.ball.wallHitCooldown) {
+                this.ball.body.velocity.y = -1 * this.ball.body.velocity.y // reverse y velocity
+                // set cooldown flag
+                this.ball.wallHitCooldown = true 
 
-        // check for collisions and handle is true
-        if(this.checkCollision(this.donkeyLeft.body, this.ball) && this.ball.x > 30) {
-            this.handleBounce(this.ball, this.donkeyLeft) 
+                // reset cooldown after 100ms to allow another bounce
+                this.time.delayedCall(100, () => {
+                    this.ball.wallHitCooldown = false
+                })
+            }
+            if (this.ball.y > 700 && !this.ball.wallHitCooldown) {
+                this.ball.body.velocity.y = -1 * this.ball.body.velocity.y // reverse y velocity
+                // set cooldown flag
+                this.ball.wallHitCooldown = true 
+
+                // reset cooldown after 100ms to allow another bounce
+                this.time.delayedCall(100, () => {
+                    this.ball.wallHitCooldown = false
+                })
+            }
         }
-        if(this.checkCollision(this.donkeyRight.body, this.ball) && this.ball.x < 625) {
-            this.handleBounce(this.ball, this.donkeyRight)
-        }
-        
+
         // if not game over play jump sound && make donkeys jump w/ key presses
         if (!this.gameOver && Phaser.Input.Keyboard.JustDown(keyD)) {  
-            this.sound.play('jump')
             this.donkeyLeft.update()
         }
         if (!this.gameOver && Phaser.Input.Keyboard.JustDown(keyK)) {
-            this.sound.play('jump')
             this.donkeyRight.update()
         }
         
     }
 
-    // check collisions
-    checkCollision(donkey, ball) {
-        // simple AABB checking
-        if (donkey.x < ball.x + ball.width &&
-            donkey.x + donkey.width > ball.x &&
-            donkey.y < ball.y + ball.height &&
-            donkey.height + donkey.y > ball.y) {
-                return true
-        } else {
-            return false
-        }
-    }
-
     handleBounce(ball, donkey) {
         // check if ball can change direction
         if (!ball.hitCooldown) { 
+            this.sound.play('jump')
             // reverse X direction & maintain Y arc
             if (donkey == this.donkeyLeft) {
-                this.ball.body.velocity.x = (Phaser.Math.Between(250, 600))     // random velocity
+                this.ball.body.velocity.x = (Phaser.Math.Between(250, 400))     // x random velocity
+                this.ball.body.velocity.y = (Phaser.Math.Between(-400, 400))     // y random velocity
             }
             else if (donkey == this.donkeyRight) {
-                this.ball.body.velocity.x = (-Phaser.Math.Between(250, 600))    // random velocity
+                this.ball.body.velocity.x = (-Phaser.Math.Between(250, 400))    // x random velocity
+                this.ball.body.velocity.y = (Phaser.Math.Between(-400, 400))    // y random velocity
             }
             
             // increase score & update score
