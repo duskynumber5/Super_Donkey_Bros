@@ -4,7 +4,7 @@ class Play extends Phaser.Scene {
     }
 
     create() {
-        this.physics.world.setBounds(0, 200, 800, 520)
+        this.physics.world.setBounds(0, 210, 800, 530)
 
         this.add.rectangle(0, 0, game.config.width, game.config.height, 0x282d2f).setOrigin(0, 0)
 
@@ -113,14 +113,14 @@ class Play extends Phaser.Scene {
         // add donkeys
         this.donkeyRight = new Donkey(this, 625, game.config.height / 1.5, 'donkey').setFlipX(true).setOrigin(0, 0)
         this.physics.world.enable(this.donkeyRight)
-        this.donkeyRight.body.setSize(30, 80).setOffset(35, 35)
+        this.donkeyRight.body.setSize(30, 60).setOffset(35, 65)
 
         this.donkeyLeft = new Donkey(this, 30, game.config.height / 1.5, 'donkey').setOrigin(0, 0)
         this.physics.world.enable(this.donkeyLeft)
-        this.donkeyLeft.body.setSize(30, 80).setOffset(95, 35)  
+        this.donkeyLeft.body.setSize(30, 60).setOffset(95, 65)  
 
         // add ball (0xffb59e outline: 0xa80203)
-        this.ball = new Ball(this, 390, 359, 'ball').setOrigin(0, 0)
+        this.ball = new Ball(this, 378, 359, 'ball').setOrigin(0, 0)
         this.ball.body.setSize(8, 15).setOffset(22, 17)  
         this.ball.body.enable = false
 
@@ -178,30 +178,6 @@ class Play extends Phaser.Scene {
             this.highScore = this.pScore        
             this.score2Left.text = this.highScore   // update text
         }  
-
-        // vertical bounds for ball
-        if (!this.gameOver) {
-            if (this.ball.y < 200 && !this.ball.wallHitCooldown) {
-                this.ball.body.velocity.y = -1 * this.ball.body.velocity.y // reverse y velocity
-                // set cooldown flag
-                this.ball.wallHitCooldown = true 
-
-                // reset cooldown after 100ms to allow another bounce
-                this.time.delayedCall(100, () => {
-                    this.ball.wallHitCooldown = false
-                })
-            }
-            if (this.ball.y > 700 && !this.ball.wallHitCooldown) {
-                this.ball.body.velocity.y = -1 * this.ball.body.velocity.y // reverse y velocity
-                // set cooldown flag
-                this.ball.wallHitCooldown = true 
-
-                // reset cooldown after 100ms to allow another bounce
-                this.time.delayedCall(100, () => {
-                    this.ball.wallHitCooldown = false
-                })
-            }
-        }
 
         // if not game over play jump sound && make donkeys jump w/ key presses
         if (!this.gameOver && Phaser.Input.Keyboard.JustDown(keyD)) {  

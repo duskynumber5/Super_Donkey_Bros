@@ -15,7 +15,7 @@ class Donkey extends Phaser.GameObjects.Sprite {
         // movement
         if (keyD.isDown || keyK.isDown) {
             //if (!this.body.onFloor()) { return }
-            this.body.setVelocityY(-1000)
+            this.body.setVelocityY(-900)
         }
     }
 

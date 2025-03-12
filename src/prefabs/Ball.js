@@ -7,12 +7,12 @@ class Ball extends Phaser.GameObjects.Sprite {
         scene.physics.add.existing(this)  
 
         //this.body.gravity.y = 500
-        this.body.setCollideWorldBounds(false)
+        this.body.setCollideWorldBounds(true)
         this.body.setImmovable(true)
 
         this.direction = Math.random() < 0.5 ? -1 : 1      // get random direction for start
         this.body.velocity.x = this.direction * 200
-        this.body.setBounce(1, 1)
+        this.body.setBounce(1)
     }
 
     update() {

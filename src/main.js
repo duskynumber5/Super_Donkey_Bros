@@ -1,6 +1,6 @@
 // Maddison Lobo
 // Super Donkey Bros
-// 15 hours
+// 20 hours
 
 // screen size and add scenes
 let config = {
