@@ -117,11 +117,12 @@ class Play extends Phaser.Scene {
 
         this.donkeyLeft = new Donkey(this, 30, game.config.height / 1.5, 'donkey').setOrigin(0, 0)
         this.physics.world.enable(this.donkeyLeft)
-        this.donkeyLeft.body.setSize(30, 80).setOffset(95, 35)
+        this.donkeyLeft.body.setSize(30, 80).setOffset(95, 35)  
 
         // add ball (0xffb59e outline: 0xa80203)
         this.ball = new Ball(this, 390, 359, 'ball').setOrigin(0, 0)
-        this.ball.body.setSize(8, 15).setOffset(22, 17)    
+        this.ball.body.setSize(8, 15).setOffset(22, 17)  
+        this.ball.body.enable = false
 
         // bind keys
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
@@ -131,9 +132,21 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(this.ball, this.donkeyLeft, this.handleBounce, null, this)
         this.physics.add.collider(this.ball, this.donkeyRight, this.handleBounce, null, this) 
 
+        // game start
+        this.startText = this.add.text(255, 300, 'press K to start', game.redConfig).setStroke('#a80203', 10)
+        this.gameStart = false // indicator
+
     }
 
     update() {
+        if (!this.gameStart) {
+            if (Phaser.Input.Keyboard.JustDown(keyK)) {
+                this.ball.body.enable = true
+                this.gameStart = true
+                this.startText.destroy() // get rid of start text
+            }
+        }
+
         // if ball off screen delete ball && game over
         if (this.ball.x >= 750 || this.ball.x <= 0) { 
             this.ball.destroy()
