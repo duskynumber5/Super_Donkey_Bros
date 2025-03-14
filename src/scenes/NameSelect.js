@@ -7,7 +7,7 @@ class NameSelect extends Phaser.Scene {
         this.add.rectangle(0, 0, game.config.width, game.config.height, 0x282d2f).setOrigin(0, 0)
 
         // title text
-        this.title = this.add.bitmapText(225, 50, 'arcadeB', 'enter your name!', 35)
+        this.title = this.add.bitmapText(195, 50, 'arcadeB', 'enter your name!', 35)
 
         //alphabet
         game.alphabet = []
@@ -18,7 +18,6 @@ class NameSelect extends Phaser.Scene {
         //console.log(game.alphabet)
 
         // actual name text lol
-        game.blueConfig.fontSize = '100px'
         this.currentLetter = 0
         this.currentSlot = 0
 
@@ -26,13 +25,13 @@ class NameSelect extends Phaser.Scene {
         game.playerName = []
 
         // each letter slot + stroke
-        this.slot1 = this.add.bitmapText(125, 300, 'arcadeB', game.alphabet[this.currentLetter], 35)
-        this.slot2 = this.add.bitmapText(275, 300, 'arcadeB', game.alphabet[this.currentLetter], 35)
-        this.slot3 = this.add.bitmapText(425, 300, 'arcadeB', game.alphabet[this.currentLetter], 35)
-        this.slot4 = this.add.bitmapText(575, 300, 'arcadeB', game.alphabet[this.currentLetter], 35)
+        this.slot1 = this.add.bitmapText(125, 300, 'arcadeB', game.alphabet[this.currentLetter], 100)
+        this.slot2 = this.add.bitmapText(275, 300, 'arcadeB', game.alphabet[this.currentLetter], 100)
+        this.slot3 = this.add.bitmapText(425, 300, 'arcadeB', game.alphabet[this.currentLetter], 100)
+        this.slot4 = this.add.bitmapText(575, 300, 'arcadeB', game.alphabet[this.currentLetter], 100)
 
         // instructions text + stroke
-        this.instructions = this.add.bitmapText(40, 700, 'arcadeR', 'press D to cycle letters and K to select', 30)
+        this.instructions = this.add.bitmapText(150, 500, 'arcadeR', 'press D to cycle letters\n    and K to select', 30)
 
         //key binds
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
@@ -44,7 +43,7 @@ class NameSelect extends Phaser.Scene {
         // if name full or if counter reached then to go play scene
         if(this.currentSlot > 3) {
             this.instructions.x = 85    // change location
-            this.instructions.text = 'press D to restart or K to confirm'   // change instructions
+            this.instructions.text = '    press D to restart or\n        K to confirm'   // change instructions
             if (Phaser.Input.Keyboard.JustDown(keyD)) {
                 this.sound.play('select')
                 for(let i = 0; i < 4; i++) {        // reset all slots to '_'
@@ -55,7 +54,7 @@ class NameSelect extends Phaser.Scene {
                 this.currentSlot = 0
                 game.playerName = []        // reset player name
                 this.instructions.x = 40        // new position 
-                this.instructions.text = 'press D to cycle letters and K to select'     // new instructions
+                this.instructions.text = '     press D to cycle letters\n         and K to select'     // new instructions
             }
             if (Phaser.Input.Keyboard.JustDown(keyK)) {
                 this.sound.play('select')

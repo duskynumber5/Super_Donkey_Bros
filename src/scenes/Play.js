@@ -116,9 +116,9 @@ class Play extends Phaser.Scene {
         }  
 
         if(this.gameOver) {
-            this.add.bitmapText(255, 300, 'arcadeR', 'G A M E  O V E R', 30)
-            this.add.bitmapText(255, 450, 'arcadeR', 'press D for menu', 30)
-            this.add.bitmapText(240, 550, 'arcadeR', 'press K to restart', 30)
+            this.add.bitmapText(225, 300, 'arcadeR', 'G A M E  O V E R', 30)
+            this.add.bitmapText(245, 450, 'arcadeR', 'press D for menu', 30)
+            this.add.bitmapText(230, 550, 'arcadeR', 'press K to restart', 30)
 
             this.time.delayedCall(500, () => {
                 // back to menu
