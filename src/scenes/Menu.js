@@ -16,6 +16,9 @@ class Menu extends Phaser.Scene {
         this.load.audio('background', './assets/background.mp3')
         this.load.audio('select', './assets/select.wav')
         this.load.audio('jump', './assets/jump.wav')
+        this.load.bitmapFont('arcadeR', 'assets/arcadeRED.png', 'assets/arcadeRED.xml')
+        this.load.bitmapFont('arcadeG', 'assets/arcadeGREEN.png', 'assets/arcadeGREEN.xml')
+        this.load.bitmapFont('arcadeB', 'assets/arcadeBLUE.png', 'assets/arcadeBLUE.xml')
     }
 
     create() {

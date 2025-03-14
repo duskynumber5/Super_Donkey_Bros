@@ -10,57 +10,19 @@ class Play extends Phaser.Scene {
 
         // game over flag
         this.gameOver = false
-        
-        let highScoreConfig = {
-            fontFamily: 'Courier',
-            fontSize: '35px', 
-            //backgroundColor: '#F3B141',
-            color: '#ffb59e',
-            align: 'right',
-            padding: {
-                top: 5,
-                bottom: 5,
-            },
-        }
-        let pScoreConfig = {
-            fontFamily: 'Courier',
-            fontSize: '35px', 
-            //backgroundColor: '#F3B141',
-            color: '#58ffff',
-            align: 'right',
-            padding: {
-                top: 5,
-                bottom: 5,
-            },
-        }
-        let numbersConfig = {
-            fontFamily: 'Courier',
-            fontSize: '40px', 
-            //backgroundColor: '#F3B141',
-            color: '#e6ff99',
-            align: 'right',
-            padding: {
-                top: 5,
-                bottom: 5,
-            },
-        }
 
         // add high score (text red (text: 0xffb59e outline: 0xa80203) -- number green (text: 0xe6ff99 outline: 0x038500))
         this.highScore = 0
         if (game.highScore > 0) {   // if there is an existing high score use that one
             this.highScore = game.highScore
         }
-        this.scoreLeft = this.add.text(60, 50, 'HIGH SCORE', highScoreConfig)
-        this.scoreLeft.setStroke('#a80203', 10) // darker stroke
-        this.score2Left = this.add.text(30, 100, this.highScore, numbersConfig)
-        this.score2Left.setStroke('#038500', 10) // darker stroke
+        this.scoreLeft = this.add.bitmapText(60, 50, 'arcadeR', 'HIGH SCORE', 35)
+        this.score2Left = this.add.bitmapText(30, 100, 'arcadeG', this.highScore, 40)
 
         // add player score w/ chosen name (text blue (text: 0x58ffff outline: 0x049da2) -- number green (text: 0xe6ff99 outline: 0x038500))
         this.pScore = 0
-        this.scoreRight = this.add.text(600, 50, game.playerName.join(''), pScoreConfig)
-        this.scoreRight.setStroke('#049da2', 10) // darker stroke
-        this.score2Right = this.add.text(550, 100, this.pScore, numbersConfig)
-        this.score2Right.setStroke('#038500', 10) // darker stroke
+        this.scoreRight = this.add.bitmapText(600, 50, 'arcadeB', game.playerName.join(''), 35)
+        this.score2Right = this.add.bitmapText(550, 100, 'arcadeG', this.pScore, 40)
         
         // add borders (yellow (0xffffd6 outline: 0xb7b713))
         let bounds = this.add.graphics()
@@ -133,7 +95,7 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(this.ball, this.donkeyRight, this.handleBounce, null, this) 
 
         // game start
-        this.startText = this.add.text(255, 300, 'press K to start', game.redConfig).setStroke('#a80203', 10)
+        this.startText = this.add.bitmapText(255, 300, 'arcadeR', 'press K to start', 30)
         this.gameStart = false // indicator
 
     }
@@ -154,11 +116,11 @@ class Play extends Phaser.Scene {
         }  
 
         if(this.gameOver) {
-            this.add.text(255, 300, 'G A M E  O V E R', game.redConfig).setStroke('#a80203', 10)
-            this.add.text(255, 450, 'press D for menu', game.redConfig).setStroke('#a80203', 10)
-            this.add.text(240, 550, 'press K to restart', game.redConfig).setStroke('#a80203', 10)
+            this.add.bitmapText(255, 300, 'arcadeR', 'G A M E  O V E R', 30)
+            this.add.bitmapText(255, 450, 'arcadeR', 'press D for menu', 30)
+            this.add.bitmapText(240, 550, 'arcadeR', 'press K to restart', 30)
 
-            this.time.delayedCall(1000, () => {
+            this.time.delayedCall(500, () => {
                 // back to menu
                 if(Phaser.Input.Keyboard.JustDown(keyD)) {
                     game.carryover = this.highScore     // save high score

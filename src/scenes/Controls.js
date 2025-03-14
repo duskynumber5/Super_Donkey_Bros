@@ -5,16 +5,11 @@ class Controls extends Phaser.Scene {
 
     create() {
         this.add.rectangle(0, 0, game.config.width, game.config.height, 0x282d2f).setOrigin(0, 0)
-        this.hello = this.add.text(175, 100, 'hi ' + game.playerName.join('') + '!', game.blueConfig)
-        this.hello.setStroke('#049da2', 10)
-        this.directions = this.add.text(155, 450, 'hit the ball back and forth', game.redConfig)
-        this.directions.setStroke('#a80203', 10)
-        this.controls = this.add.text(175, 300, 'rapidly press D and K to', game.redConfig)
-        this.controls.setStroke('#a80203', 10)
-        this.controls = this.add.text(200, 350, 'make each donkey jump', game.redConfig)
-        this.controls.setStroke('#a80203', 10)
-        this.play = this.add.text(250, 600, 'press K to play!', game.redConfig)
-        this.play.setStroke('#a80203', 10)
+        this.hello = this.add.bitmapText(175, 100, 'arcadeB', 'hi ' + game.playerName.join('') + '!', 35)
+        this.directions = this.add.bitmapText(155, 450, 'arcadeR', 'hit the ball back and forth', 30)
+        this.controls = this.add.bitmapText(175, 300, 'arcadeR', 'rapidly press D and K to', 30)
+        this.controls = this.add.bitmapText(200, 350, 'arcadeR', 'make each donkey jump', 30)
+        this.play = this.add.bitmapText(250, 600, 'arcadeR', 'press K to play!', 30)
 
         //key binds
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)

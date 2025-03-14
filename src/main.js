@@ -1,6 +1,6 @@
 // Maddison Lobo
 // Super Donkey Bros
-// 20 hours
+// 24 hours
 
 // screen size and add scenes
 let config = {
@@ -14,7 +14,7 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
-            debug: false
+            debug: true
         }
     },
     scene: [ Menu, Credits, NameSelect, Controls, Play ],

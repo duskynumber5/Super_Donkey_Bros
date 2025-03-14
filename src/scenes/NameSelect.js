@@ -6,33 +6,8 @@ class NameSelect extends Phaser.Scene {
     create() {
         this.add.rectangle(0, 0, game.config.width, game.config.height, 0x282d2f).setOrigin(0, 0)
 
-        // text configs
-        game.blueConfig = {
-            fontFamily: 'Courier',
-            fontSize: '35px', 
-            //backgroundColor: '#F3B141',
-            color: '#58ffff',
-            align: 'right',
-            padding: {
-                top: 5,
-                bottom: 5,
-            },
-        }
-        game.redConfig = {
-            fontFamily: 'Courier',
-            fontSize: '30px', 
-            //backgroundColor: '#F3B141',
-            color: '#ffb59e',
-            align: 'right',
-            padding: {
-                top: 5,
-                bottom: 5,
-            },
-        }
-
         // title text
-        this.title = this.add.text(225, 50, 'enter your name!', game.blueConfig)
-        this.title.setStroke('#049da2', 10)     // darker stroke
+        this.title = this.add.bitmapText(225, 50, 'arcadeB', 'enter your name!', 35)
 
         //alphabet
         game.alphabet = []
@@ -51,18 +26,13 @@ class NameSelect extends Phaser.Scene {
         game.playerName = []
 
         // each letter slot + stroke
-        this.slot1 = this.add.text(125, 300, game.alphabet[this.currentLetter], game.blueConfig)
-        this.slot1.setStroke('#049da2', 10)     
-        this.slot2 = this.add.text(275, 300, game.alphabet[this.currentLetter], game.blueConfig)
-        this.slot2.setStroke('#049da2', 10)
-        this.slot3 = this.add.text(425, 300, game.alphabet[this.currentLetter], game.blueConfig)
-        this.slot3.setStroke('#049da2', 10)
-        this.slot4 = this.add.text(575, 300, game.alphabet[this.currentLetter], game.blueConfig)
-        this.slot4.setStroke('#049da2', 10)
+        this.slot1 = this.add.bitmapText(125, 300, 'arcadeB', game.alphabet[this.currentLetter], 35)
+        this.slot2 = this.add.bitmapText(275, 300, 'arcadeB', game.alphabet[this.currentLetter], 35)
+        this.slot3 = this.add.bitmapText(425, 300, 'arcadeB', game.alphabet[this.currentLetter], 35)
+        this.slot4 = this.add.bitmapText(575, 300, 'arcadeB', game.alphabet[this.currentLetter], 35)
 
         // instructions text + stroke
-        this.instructions = this.add.text(40, 700, 'press D to cycle letters and K to select', game.redConfig)
-        this.instructions.setStroke('#a80203', 10)
+        this.instructions = this.add.bitmapText(40, 700, 'arcadeR', 'press D to cycle letters and K to select', 30)
 
         //key binds
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
@@ -95,8 +65,9 @@ class NameSelect extends Phaser.Scene {
 
         this.slots = [this.slot1, this.slot2, this.slot3, this.slot4]       // array of slots    
 
+        // ADD NEW INDICATOR FOR SLOTS
         if (this.currentSlot < 4) {
-            this.slots[this.currentSlot].setStroke('#FFFFFF', 10)
+            //this.slots[this.currentSlot].setStroke('#FFFFFF', 10)
         }
 
         // detect input for change letter
@@ -122,7 +93,7 @@ class NameSelect extends Phaser.Scene {
             //console.log(game.playerName)
 
             // update highlight
-            this.slots[this.currentSlot].setStroke('#049da2', 10)
+            //this.slots[this.currentSlot].setStroke('#049da2', 10)
             this.currentSlot += 1           // next slot  
             this.currentLetter = 0          // start at first letter
         }
