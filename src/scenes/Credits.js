@@ -12,6 +12,7 @@ class Credits extends Phaser.Scene {
         this.add.bitmapText(50, 425, 'arcadeB', 'sfx:\n     Maddison Lobo', 18)
         this.add.bitmapText(50, 500, 'arcadeB', 'tools & tech:\n\n     developed with Phaser.js\n     artwork created with Piskel\n     sfx created with JFXR', 18)
         this.add.bitmapText(50, 625, 'arcadeB', 'special thanks:\n\n     testers :)', 18)
+        this.add.bitmapText(50, 750, 'arcadeR', 'press K for menu', 18)
 
         // define keys
         keyK = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K)
