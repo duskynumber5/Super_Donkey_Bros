@@ -95,14 +95,11 @@ class Play extends Phaser.Scene {
         this.ball.body.setSize(8, 15).setOffset(22, 17)  
         this.ball.body.enable = false
 
-        // Create a particle emitter
-        this.particles = this.add.particles('ball')
-
+        // create a particle emitter
         this.emitter = this.add.particles(25, 25, 'ball', {
             speed: 50, 
             lifespan: 300,
-            scale: { start: 0.5, end: 0 }, // Shrinks over time
-            blendMode: 'ADD' // Glowing effect
+            scale: { start: 0.5, end: 0 },
         })
 
         // Attach the emitter to the ball
@@ -141,6 +138,7 @@ class Play extends Phaser.Scene {
             this.add.bitmapText(225, 300, 'arcadeR', 'G A M E  O V E R', 30)
             this.add.bitmapText(245, 450, 'arcadeR', 'press D for menu', 30)
             this.add.bitmapText(230, 550, 'arcadeR', 'press K to restart', 30)
+            this.emitter.destroy()
 
             this.time.delayedCall(500, () => {
                 // back to menu
