@@ -26,6 +26,7 @@ class NameSelect extends Phaser.Scene {
 
         // each letter slot + stroke
         this.slot1 = this.add.bitmapText(125, 300, 'arcadeB', game.alphabet[this.currentLetter], 100)
+        this.slot1.setTint(0x049da2)
         this.slot2 = this.add.bitmapText(275, 300, 'arcadeB', game.alphabet[this.currentLetter], 100)
         this.slot3 = this.add.bitmapText(425, 300, 'arcadeB', game.alphabet[this.currentLetter], 100)
         this.slot4 = this.add.bitmapText(575, 300, 'arcadeB', game.alphabet[this.currentLetter], 100)
@@ -66,7 +67,7 @@ class NameSelect extends Phaser.Scene {
 
         // ADD NEW INDICATOR FOR SLOTS
         if (this.currentSlot < 4) {
-            //this.slots[this.currentSlot].setStroke('#FFFFFF', 10)
+            this.slots[this.currentSlot].setTint(0x049da2)
         }
 
         // detect input for change letter
@@ -92,7 +93,7 @@ class NameSelect extends Phaser.Scene {
             //console.log(game.playerName)
 
             // update highlight
-            //this.slots[this.currentSlot].setStroke('#049da2', 10)
+            this.slots[this.currentSlot].setTint(0xFFFFFF)
             this.currentSlot += 1           // next slot  
             this.currentLetter = 0          // start at first letter
         }

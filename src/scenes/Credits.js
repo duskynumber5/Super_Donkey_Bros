@@ -5,8 +5,13 @@ class Credits extends Phaser.Scene {
 
     create() {
         // text for all credits
-        this.add.text(300, 400, 'insert text here!')
-        this.add.text(300, 700, 'press K for menu')
+        this.add.bitmapText(50, 50, 'arcadeG', 'Credits!', 18)
+        this.add.bitmapText(50, 100, 'arcadeB', 'game design & programming:\n\n     Maddison Lobo', 18)
+        this.add.bitmapText(50, 200, 'arcadeB', 'background art & sprite art:\n\n     Maddison Lobo', 18)
+        this.add.bitmapText(50, 300, 'arcadeB', 'music:\n\n     "Pinball Spring" Kevin MacLeod (incompetech.com)\n     Licensed under Creative Commons: By Attribution 4.0\n     License http://creativecommons.org/licenses/by/4.0/', 18)
+        this.add.bitmapText(50, 425, 'arcadeB', 'sfx:\n     Maddison Lobo', 18)
+        this.add.bitmapText(50, 500, 'arcadeB', 'tools & tech:\n\n     developed with Phaser.js\n     artwork created with Piskel\n     sfx created with JFXR', 18)
+        this.add.bitmapText(50, 625, 'arcadeB', 'special thanks:\n\n     testers :)', 18)
 
         // define keys
         keyK = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K)

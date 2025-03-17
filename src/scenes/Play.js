@@ -76,15 +76,37 @@ class Play extends Phaser.Scene {
         this.donkeyRight = new Donkey(this, 625, game.config.height / 1.5, 'donkey').setFlipX(true).setOrigin(0, 0)
         this.physics.world.enable(this.donkeyRight)
         this.donkeyRight.body.setSize(30, 60).setOffset(35, 65)
+        this.donkeyRight.setPipeline('Light2D')
 
         this.donkeyLeft = new Donkey(this, 30, game.config.height / 1.5, 'donkey').setOrigin(0, 0)
         this.physics.world.enable(this.donkeyLeft)
         this.donkeyLeft.body.setSize(30, 60).setOffset(95, 65)  
+        this.donkeyLeft.setPipeline('Light2D')
+
+        // pipeline FX on to make barries make donkeys glow
+        this.lights.enable()
+        this.lights.addLight(50, 200, 1000).setColor(0xffb59e).setIntensity(2)
+        this.lights.addLight(735, 200, 1000).setColor(0xffb59e).setIntensity(2)
+        this.lights.addLight(50, 740, 1000).setColor(0xffb59e).setIntensity(2)
+        this.lights.addLight(735, 740, 1000).setColor(0xffb59e).setIntensity(2)
 
         // add ball (0xffb59e outline: 0xa80203)
         this.ball = new Ball(this, 378, 359, 'ball').setOrigin(0, 0)
         this.ball.body.setSize(8, 15).setOffset(22, 17)  
         this.ball.body.enable = false
+
+        // Create a particle emitter
+        this.particles = this.add.particles('ball')
+
+        this.emitter = this.add.particles(25, 25, 'ball', {
+            speed: 50, 
+            lifespan: 300,
+            scale: { start: 0.5, end: 0 }, // Shrinks over time
+            blendMode: 'ADD' // Glowing effect
+        })
+
+        // Attach the emitter to the ball
+        this.emitter.startFollow(this.ball)
 
         // bind keys
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)

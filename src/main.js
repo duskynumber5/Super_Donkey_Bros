@@ -1,6 +1,13 @@
 // Maddison Lobo
 // Super Donkey Bros
-// 25 hours
+// 28 hours
+
+// list of major components
+    // physics
+    // text objects
+    // animation
+    // particles
+    // pipeline FX
 
 // screen size and add scenes
 let config = {

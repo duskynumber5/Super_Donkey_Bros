@@ -11,8 +11,13 @@ class Menu extends Phaser.Scene {
             startFrame: 0,
             endFrame: 3,
         })
+        this.load.spritesheet('animated_title', './assets/animated_title.png', {
+            frameWidth: 800,
+            frameHeight: 800,
+            startFrame: 0,
+            endFrame: 1,
+        })
         this.load.image('ball', './assets/ball.png')
-        this.load.image('title', './assets/title.png')
         this.load.audio('background', './assets/background.mp3')
         this.load.audio('select', './assets/select.wav')
         this.load.audio('jump', './assets/jump.wav')
@@ -25,7 +30,18 @@ class Menu extends Phaser.Scene {
         this.add.rectangle(0, 0, game.config.width, game.config.height, 0x7bd6e3).setOrigin(0, 0)
 
         // add drawn title for now
-        this.add.image(400, 400, 'title')
+        this.title = this.add.sprite(400, 400, 'animated_title')
+        
+        // animation
+        this.anims.create({
+            key: 'animated_title',
+            frames: this.anims.generateFrameNumbers('animated_title', { start: 0, end: 1, first: 0}),
+            frameRate: 2,
+            repeat: -1,
+        })
+
+        // play animation
+        this.title.anims.play('animated_title')
 
         // bind keys
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
