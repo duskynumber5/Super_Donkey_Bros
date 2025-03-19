@@ -27,7 +27,7 @@ class Menu extends Phaser.Scene {
     }
 
     create() {
-        this.add.rectangle(0, 0, game.config.width, game.config.height, 0x7bd6e3).setOrigin(0, 0)
+        //this.add.rectangle(0, 0, game.config.width, game.config.height, 0x7bd6e3).setOrigin(0, 0)
 
         // add drawn title for now
         this.title = this.add.sprite(400, 400, 'animated_title')

@@ -7,7 +7,7 @@ class NameSelect extends Phaser.Scene {
         this.add.rectangle(0, 0, game.config.width, game.config.height, 0x282d2f).setOrigin(0, 0)
 
         // title text
-        this.title = this.add.bitmapText(195, 50, 'arcadeB', 'enter your name!', 35)
+        this.title = this.add.bitmapText(195, 100, 'arcadeB', 'enter your name!', 35)
 
         //alphabet
         game.alphabet = []
@@ -17,21 +17,21 @@ class NameSelect extends Phaser.Scene {
         }
         //console.log(game.alphabet)
 
-        // actual name text lol
+        // counters for letters & slots
         this.currentLetter = 0
         this.currentSlot = 0
 
         // array to store player name
         game.playerName = []
 
-        // each letter slot + stroke
+        // each letter slot
         this.slot1 = this.add.bitmapText(125, 300, 'arcadeB', game.alphabet[this.currentLetter], 100)
-        this.slot1.setTint(0x049da2)
+        this.slot1.setTint(0x049da2)    // select color is on first slot
         this.slot2 = this.add.bitmapText(275, 300, 'arcadeB', game.alphabet[this.currentLetter], 100)
         this.slot3 = this.add.bitmapText(425, 300, 'arcadeB', game.alphabet[this.currentLetter], 100)
         this.slot4 = this.add.bitmapText(575, 300, 'arcadeB', game.alphabet[this.currentLetter], 100)
 
-        // instructions text + stroke
+        // instructions text
         this.instructions = this.add.bitmapText(150, 500, 'arcadeR', 'press D to cycle letters\n    and K to select', 30)
 
         //key binds
@@ -43,9 +43,9 @@ class NameSelect extends Phaser.Scene {
     update() { 
         // if name full or if counter reached then to go play scene
         if(this.currentSlot > 3) {
-            this.instructions.x = 85    // change location
+            this.instructions.x = 85    // change text location
             this.instructions.text = '    press D to restart or\n        K to confirm'   // change instructions
-            if (Phaser.Input.Keyboard.JustDown(keyD)) {
+            if (Phaser.Input.Keyboard.JustDown(keyD)) {     // select reset name
                 this.sound.play('select')
                 for(let i = 0; i < 4; i++) {        // reset all slots to '_'
                     this.currentSlot = i
@@ -57,7 +57,7 @@ class NameSelect extends Phaser.Scene {
                 this.instructions.x = 40        // new position 
                 this.instructions.text = '     press D to cycle letters\n         and K to select'     // new instructions
             }
-            if (Phaser.Input.Keyboard.JustDown(keyK)) {
+            if (Phaser.Input.Keyboard.JustDown(keyK)) {     // select to continue
                 this.sound.play('select')
                 this.scene.start('controlsScene')       // proceed to control scene
             }
@@ -65,16 +65,16 @@ class NameSelect extends Phaser.Scene {
 
         this.slots = [this.slot1, this.slot2, this.slot3, this.slot4]       // array of slots    
 
-        // ADD NEW INDICATOR FOR SLOTS
+        // indicator for current slot
         if (this.currentSlot < 4) {
-            this.slots[this.currentSlot].setTint(0x049da2)
+            this.slots[this.currentSlot].setTint(0x049da2)      // change current slot tint
         }
 
         // detect input for change letter
         if(Phaser.Input.Keyboard.JustDown(keyD)) {
             this.sound.play('select')
             //console.log(this.currentSlot)
-            if(this.currentLetter < 26) {
+            if(this.currentLetter < 26) {       // if not at end of array
                 this.slots[this.currentSlot].text = game.alphabet[this.currentLetter += 1]      // cycle through alphabet
             } else {
                 this.currentLetter = 1
@@ -93,7 +93,7 @@ class NameSelect extends Phaser.Scene {
             //console.log(game.playerName)
 
             // update highlight
-            this.slots[this.currentSlot].setTint(0xFFFFFF)
+            this.slots[this.currentSlot].setTint(0xFFFFFF)      // reset tint so not selected
             this.currentSlot += 1           // next slot  
             this.currentLetter = 0          // start at first letter
         }

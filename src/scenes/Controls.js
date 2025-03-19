@@ -4,7 +4,10 @@ class Controls extends Phaser.Scene {
     }
 
     create() {
+        // background
         this.add.rectangle(0, 0, game.config.width, game.config.height, 0x282d2f).setOrigin(0, 0)
+
+        // instructions
         this.hello = this.add.bitmapText(220, 100, 'arcadeB', 'hi ' + game.playerName.join('') + '!', 75)
         this.directions = this.add.bitmapText(140, 450, 'arcadeR', 'hit the ball back and forth', 30)
         this.controls = this.add.bitmapText(160, 300, 'arcadeR', 'rapidly press D and K to', 30)
